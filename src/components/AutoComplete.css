@@ -1,0 +1,19 @@
+.AutoComplete {
+  margin: 40px auto;
+  padding: 8px;
+  max-width: 300px;
+}
+
+.AutoComplete label {
+  display: block;
+  margin-bottom: 4px;
+}
+
+.AutoComplete input {
+  padding: 8px;
+  min-width: 100%;
+}
+
+.AutoComplete .highlight {
+  background-color: yellow;
+}
