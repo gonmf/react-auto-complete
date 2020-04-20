@@ -21,8 +21,16 @@ const data = ['Carlsen, Magnus', 'Caruana, Fabiano', 'Ding, Liren', 'Giri, Anish
               'Shirov, Alexei', 'Parligras, Mircea-Emilian', 'Morozevich, Alexander', 'Swiercz, Dariusz',
               'Fressinet, Laurent', 'Kovalenko, Igor', 'Hammer, Jon Ludvig'].sort();
 
-export default async function request(apiEndpoint, searchTerm) {
-  const regex = new RegExp(searchTerm, 'i');
+const memo = {};
 
-  return { status: 'ok', data: data.filter((string) => regex.test(string)) };
+export default async function request(apiEndpoint, searchTerm) {
+  memo[apiEndpoint] = memo[apiEndpoint] || {};
+
+  memo[apiEndpoint][searchTerm] = memo[apiEndpoint][searchTerm] || ((() => {
+    const regex = new RegExp(searchTerm, 'i');
+
+    return { status: 'ok', data: data.filter((string) => regex.test(string)) };
+  })());
+
+  return memo[apiEndpoint][searchTerm];
 }
