@@ -10,12 +10,13 @@ export default class extends Component {
       suggestions: []
     };
 
+    this.textInput = React.createRef();
+
     this.renderSuggestion = this.renderSuggestion.bind(this);
   }
 
-  textChanged(event) {
-    const input = event.target,
-          value = (input.value || '').trim();
+  textChanged() {
+    const value = this.textInput.current.value.trim();
 
     if (this.state.busy) { return; }
 
@@ -23,7 +24,7 @@ export default class extends Component {
       this.setState({
         busy: true
       }, () => {
-        let searchText = document.querySelector('.AutoComplete input[type="text"]').value;
+        let searchText = this.textInput.current.value.trim();
 
         apiRequest(this.props.dataSrc, searchText).then((res) => {
           if (res.status === 'ok') {
@@ -79,7 +80,7 @@ export default class extends Component {
       <div className='AutoComplete'>
         <label>Name Search</label>
         <input type='hidden' name={this.props.name} />
-        <input type='text' onKeyUp={this.textChanged.bind(this)} placeholder="Start typing a name..." />
+        <input type='text' onKeyUp={this.textChanged.bind(this)} placeholder="Start typing a name..." ref={this.textInput} />
 
         <div name='suggestions'>
           {suggestions.map((sugg, i) => this.renderSuggestion(sugg, termSearched, i))}
